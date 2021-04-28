@@ -19,10 +19,13 @@ class App extends React.Component{
     }
 
     addTask=(task)=>{
-        this.state.tasks.push(task);
+        if(task.task){
+          this.state.tasks.push(task);
         this.setState({tasks:this.state.tasks});
         this.saveToLocalStorage();
-    }
+
+        }
+            }
 
     saveToLocalStorage=()=>{
         localStorage["tasks"] = JSON.stringify(this.state.tasks);
