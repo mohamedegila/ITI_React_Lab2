@@ -33,12 +33,12 @@ class App extends React.Component{
             <div className="container mt-5 border">
               <div className="m-3">
               <h1 className="text-center">To - List</h1>
-            <div className="mt-2 border">  
-            <hr />
-              <DisplayTasks tasks={this.state.tasks} />
+           
+            
+                 <DisplayTasks tasks={this.state.tasks} />
+                
               
-              </div>
-              <div className="ml-3">
+              <div className="ml-5">
               <AddTask addTask={this.addTask} />
               </div>
               </div>
@@ -93,9 +93,13 @@ DisplayTasks.defaultProps={
 
 class DisplayTask extends React.Component{
     render(){
-        return <div>
-            {this.props.task.task} <br/>
-            </div>
+        return<div className="card">
+<ul className="list-group list-group-flush">
+   <li className="list-group-item">
+   {this.props.task.task} 
+   </li>
+</ul>
+</div>
     }
 }
 
