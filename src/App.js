@@ -1,25 +1,103 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from 'react';
+
+class App extends React.Component{
+
+    constructor(){
+        super();
+        this.state={
+            tasks:[]
+        }
+    }
+
+    componentDidMount(){
+        if(localStorage["tasks"]){
+        let tasks = JSON.parse(localStorage["tasks"])
+        
+        this.setState({tasks:tasks})
+        }
+    }
+
+    addTask=(task)=>{
+        this.state.tasks.push(task);
+        this.setState({tasks:this.state.tasks});
+        this.saveToLocalStorage();
+    }
+
+    saveToLocalStorage=()=>{
+        localStorage["tasks"] = JSON.stringify(this.state.tasks);
+    }
+
+    render(){
+        return <div>
+            <div className="container mt-5 border">
+              <div className="m-3">
+              <h1 className="text-center">To - List</h1>
+            <div className="mt-2 border">  
+            <hr />
+              <DisplayTasks tasks={this.state.tasks} />
+              
+              </div>
+              <div className="ml-3">
+              <AddTask addTask={this.addTask} />
+              </div>
+              </div>
+            </div>
+        </div>
+    }
+
 }
+
+
+class AddTask extends React.Component{
+
+    constructor(props){
+        super();
+        this.state={
+            task:"",
+            error:""
+        }
+    }
+
+    addTask=()=>{
+        let task = {
+            task:this.state.task
+        }
+
+        this.props.addTask(task);
+    }
+    render(){
+        return <div>
+            {this.state.error}<br/>
+            Task <input className="ml-2" type="text" placeholder="Task name" value={this.state.task} onChange={(e)=>this.setState({task:e.target.value})} />
+           
+            <button className="btn btn-outline-info bt-sm ml-2" onClick={this.addTask} >Add</button>
+        </div>
+    }
+}
+
+
+class DisplayTasks extends React.Component{
+    render(){
+        return <div className="m-2">
+            {this.props.tasks.length > 0 ?this.props.tasks.map((item)=>{
+                return <DisplayTask task={item} key={item.task} />
+            }):"Empty"}
+        </div>
+    }
+}
+
+DisplayTasks.defaultProps={
+    tasks:[]
+}
+
+class DisplayTask extends React.Component{
+    render(){
+        return <div>
+            {this.props.task.task} <br/>
+            </div>
+    }
+}
+
 
 export default App;
